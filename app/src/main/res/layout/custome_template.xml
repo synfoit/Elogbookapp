@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:orientation="horizontal"
+    android:weightSum="8">
+
+    <TextView
+        android:id="@+id/tv_parameterName"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="2.0"
+        android:fontFamily="@font/nunitonans_regular"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        android:scrollbars="horizontal"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/tv_uppervalue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:fontFamily="@font/nunitosans_light"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/tv_lower"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:fontFamily="@font/nunitosans_light"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textAlignment="center"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_range"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:fontFamily="@font/nunitosans_light"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textSize="12sp" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_dropdown"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="3.0"
+        android:background="@null"
+        android:visibility="gone"
+        android:paddingTop="-5dp"
+        android:scrollbars="horizontal"
+        android:layout_marginBottom="5dp"
+        app:boxBackgroundColor="@color/white"
+        tools:ignore="RtlSymmetry">
+
+        <AutoCompleteTextView
+            android:id="@+id/act_dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="false"
+            android:fontFamily="@font/nunitonans_regular"
+            android:inputType="none"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+
+            android:scrollbars="horizontal"
+            android:text="@string/select_value"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            tools:ignore="LabelFor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <EditText
+        android:id="@+id/et_paravalue"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:padding="5dp"
+        android:paddingEnd="15dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="3.0"
+        android:fontFamily="@font/nunitonans_regular"
+        android:inputType="text"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:ignore="RtlSymmetry" />
+
+    <EditText
+        android:id="@+id/et_paraint"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:padding="5dp"
+        android:paddingEnd="15dp"
+        android:layout_weight="3.0"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/nunitonans_regular"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:ignore="RtlSymmetry" />
+
+
+</LinearLayout>
+

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.elogbookapp">
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@drawable/ic_app_icon"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Elogbookapp"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
+
+        <service
+            android:name=".ForegroundService"
+            android:enabled="true"
+            android:exported="false"/>
+
+        <receiver
+            android:name=".MybroadcastReciver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".HomeScreen"
+            android:exported="false"
+            android:theme="@style/Theme.Elogbookapp.NoActionBar" />
+        <activity
+            android:name=".ShowstoreData"
+            android:exported="false"
+            android:theme="@style/Theme.Elogbookapp.NoActionBar" />
+        <activity
+            android:name=".LoginScreen"
+            android:exported="false"
+            android:theme="@style/Theme.Elogbookapp.NoActionBar" />
+        <activity
+            android:name=".TMScreen"
+            android:exported="false"
+            android:theme="@style/Theme.Elogbookapp.NoActionBar" />
+        <activity
+            android:name=".SplashScreen"
+            android:exported="true"
+            android:theme="@style/Theme.Elogbookapp.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
