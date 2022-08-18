@@ -22,6 +22,11 @@ public class MasterRepository {
 
                 String jsonData = jsonParser.getJsonParser(url);
                 File file = new File(context.getFilesDir(), fileName);
+                if (file.exists()) {
+                    System.out.println("exitsfile");
+                    file.delete();
+
+                }
                 FileWriter fileWriter = new FileWriter(file,true);
                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
                 bufferedWriter.write(jsonData);

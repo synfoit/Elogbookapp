@@ -4,7 +4,7 @@
     android:shape="rectangle" android:padding="10dp"
     >
 
-    <solid android:color="#556ee6"/> <!-- this one is the color of the Rounded Button -->
+    <solid android:color="@color/purple_500"/> <!-- this one is the color of the Rounded Button -->
 
     <corners
         android:bottomRightRadius="10dp"

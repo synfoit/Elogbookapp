@@ -27,7 +27,7 @@ public class ForegroundService  extends Service {
 
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        parameterValueRepository = new ParameterValueRepository();
+        //parameterValueRepository = new ParameterValueRepository();
         new Thread(new Runnable() {
             @Override
             public void run() {

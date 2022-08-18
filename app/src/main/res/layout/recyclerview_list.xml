@@ -64,20 +64,20 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/cpdTypeLayout"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                               style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignBaseline="@id/qqet_date"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="10dp"
-                            android:visibility="gone"
+
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:ignore="RelativeOverlap">
 
-                            <AutoCompleteTextView
-                                android:id="@+id/cpdType"
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tv_tempName"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:inputType="none"
@@ -85,7 +85,37 @@
                                 android:textColor="@color/purple_500"
                                 tools:ignore="LabelFor" />
 
+
                         </com.google.android.material.textfield.TextInputLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/qqet_date"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="10dp"
+                            android:inputType="none"
+                            android:background="@drawable/customedit"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="RelativeOverlap" />
+                       <!-- <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/qqet_date"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="10dp"
+                            android:hint="Template Name"
+                            app:endIconMode="clear_text"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="RelativeOverlap">
+
+
+
+                        </com.google.android.material.textfield.TextInputLayout>-->
 
                     </RelativeLayout>
 
@@ -124,7 +154,7 @@
                         android:layout_marginStart="15dp"
                         android:layout_marginEnd="15dp"
                         android:background="@drawable/rounded_rectangle"
-                        android:backgroundTint="#556ee6"
+
                         android:fontFamily="@font/nunitonans_regular"
                         android:text="@string/submit"
                         android:textColor="@color/white" />

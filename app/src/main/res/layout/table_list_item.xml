@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:weightSum="10">
+    android:weightSum="12">
 
 
     <TextView
@@ -26,14 +26,23 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="3.0"
-
         android:padding="5dp"
         android:background="@drawable/table_content_cell_bg"
         android:fontFamily="@font/nunitonans_regular"
         android:textSize="12sp"
         android:textStyle="bold"
         />
-
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_weight="2.0"
+        android:padding="5dp"
+        android:background="@drawable/table_content_cell_bg"
+        android:fontFamily="@font/nunitonans_regular"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        />
     <TextView
         android:id="@+id/tv_section"
         android:layout_width="0dp"

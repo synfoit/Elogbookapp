@@ -34,9 +34,9 @@
     <string name="lower_value">Lower value</string>
     <string name="range">Range</string>
     <string name="enter_value">Enter value</string>
-    <string name="template_list">Template List</string>
-    <string name="template_1">Template 1</string>
-    <string name="tempale_2">Tempale 2</string>
+    <string name="template_list">Chillier</string>
+    <string name="template_1">Tower Sol Change Over Data</string>
+    <string name="tempale_2">Per Shift Caustic Add Data  </string>
     <string name="template_3">Template 3</string>
     <string name="fill_parameter">Fill Parameter</string>
     <string name="remain_parameter_today_10_0">Remain Parameter today 10/0</string>
@@ -44,4 +44,5 @@
     <string name="template_name">Template Name</string>
     <string name="section_name">Section Name</string>
     <string name="parameter_value">Parameter Value</string>
+    <string name="elogbook_management_system">Elogbook Management System</string>
 </resources>

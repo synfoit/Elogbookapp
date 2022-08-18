@@ -32,27 +32,30 @@ import java.util.List;
 import java.util.Map;
 
 public class ParameterMasterAdapter extends RecyclerView.Adapter<ParameterMasterAdapter.MyViewHolder> {
-    ArrayList<SectionParameters> parameterMasterList;
+    ArrayList<Parameter> parameterMasterList;
 
     MyViewHolder holder;
     View rootView;
     Context context;
-    int parentTempId;
+    int templateId,sectionId;
 
 
     Map<String, EditText> editTextHashMap = new HashMap<>();
     Map<String, String> dropdownHashMap = new HashMap<>();
-    ParameterValueRepository parameterValueRepository = new ParameterValueRepository();
+    ParameterValueRepository parameterValueRepository ;
     ParameterUtil parameterUtil = new ParameterUtil();
-    String date, uniqueID;
+    String date, uniqueID,token;
     String[] dataType = {"Dropdown", "Numeric", "Text", "Checkbox"};
 
-    public ParameterMasterAdapter(ArrayList<SectionParameters> parameterMasterList, int parentTempId, Context context, String date, String uniqueID) {
+    public ParameterMasterAdapter(ArrayList<Parameter> parameterMasterList, int templateId,int sectionId, Context context, String date, String uniqueID,String token) {
         this.parameterMasterList = parameterMasterList;
-        this.parentTempId = parentTempId;
+        this.templateId = templateId;
         this.context = context;
         this.date = date;
+        this.token=token;
+        this.sectionId=sectionId;
         this.uniqueID = uniqueID;
+        parameterValueRepository = new ParameterValueRepository(context,token);
         editTextHashMap.clear();
         dropdownHashMap.clear();
     }
@@ -92,70 +95,63 @@ public class ParameterMasterAdapter extends RecyclerView.Adapter<ParameterMaster
 
         this.holder = holder;
 
-        SectionParameters section = parameterMasterList.get(position);
+        Parameter parametersection = parameterMasterList.get(position);
 
-        holder.title.setText(section.getParameterName());
+        holder.title.setText(parametersection.getParameterName());
 
-        int pm = section.getParameterId();
 
-        List<Parameter> parameterList = parameterUtil.getParameterData(context);
 
-        List<ManualDataDetail> details = parameterValueRepository.getPVDataTemplateId(context, date, parentTempId, uniqueID);
+        List<ManualDataDetail> details = parameterValueRepository.getPVDataTemplateId(context, date, templateId, uniqueID,token);
 
         //here we take parameter data from local store then compare with SectionParameters then show in list
 
 
-        for (int k = 0; k < parameterList.size(); k++) {
-            Parameter parameter = parameterList.get(k);
-            if (pm == parameter.getParameterId()) {
-                holder.upper_limit.setText(String.valueOf(parameter.getUpperLimit()));
-                holder.lowerlimit.setText(String.valueOf(parameter.getLowerLimit()));
-                holder.range.setText(String.valueOf(parameter.getToRange()));
+
+                holder.upper_limit.setText(String.valueOf(parametersection.getUpperLimit()));
+                holder.lowerlimit.setText(String.valueOf(parametersection.getLowerLimit()));
+                holder.range.setText(String.valueOf(parametersection.getToRange()));
 
 
                 ManualDataDetail dataDetail = null;
                 if (details.size() != 0) {
                     for (int a = 0; a < details.size(); a++) {
-
                         dataDetail = details.get(a);
-                        if (parameter.getParameterFieldType().equalsIgnoreCase(dataType[0])) {
-                            setDropdownValue(section, parameter, dataDetail);
-                        } else if (parameter.getParameterFieldType().equalsIgnoreCase(dataType[2])) {
-                            setTextValue(section, dataDetail);
-                        } else if (parameter.getParameterFieldType().equalsIgnoreCase(dataType[1])) {
+                        if (parametersection.getParameterFieldType().equalsIgnoreCase(dataType[0])) {
+                            setDropdownValue(parametersection, parametersection, dataDetail);
+                        } else if (parametersection.getParameterFieldType().equalsIgnoreCase(dataType[2])) {
+                            setTextValue(parametersection, dataDetail);
+                        } else if (parametersection.getParameterFieldType().equalsIgnoreCase(dataType[1])) {
                             holder.editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                            setTextValue(section,  dataDetail);
-                        } else if (parameter.getParameterFieldType().equalsIgnoreCase(dataType[3])) {
+                            setTextValue(parametersection,  dataDetail);
+                        } else if (parametersection.getParameterFieldType().equalsIgnoreCase(dataType[3])) {
                             holder.editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                            setTextValue(section,  dataDetail);
+                            setTextValue(parametersection,  dataDetail);
                         }
                     }
 
                 } else {
-                    if (parameter.getParameterFieldType().equalsIgnoreCase(dataType[0])) {
-                        setDropdownValue(section, parameter, dataDetail);
-                    } else if (parameter.getParameterFieldType().equalsIgnoreCase(dataType[2])) {
-                        setTextValue(section, dataDetail);
-                    } else if (parameter.getParameterFieldType().equalsIgnoreCase(dataType[1])) {
+                    if (parametersection.getParameterFieldType().equalsIgnoreCase(dataType[0])) {
+                        setDropdownValue(parametersection, parametersection, dataDetail);
+                    } else if (parametersection.getParameterFieldType().equalsIgnoreCase(dataType[2])) {
+                        setTextValue(parametersection, dataDetail);
+                    } else if (parametersection.getParameterFieldType().equalsIgnoreCase(dataType[1])) {
                         holder.editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                        setTextValue(section,  dataDetail);
-                    } else if (parameter.getParameterFieldType().equalsIgnoreCase(dataType[3])) {
+                        setTextValue(parametersection,  dataDetail);
+                    } else if (parametersection.getParameterFieldType().equalsIgnoreCase(dataType[3])) {
                         holder.editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                        setTextValue(section,  dataDetail);
+                        setTextValue(parametersection,  dataDetail);
                     }
                 }
 
 
 
-            }
 
-        }
 
 
     }
 
 
-    public void setDropdownValue(SectionParameters section, Parameter parameter, ManualDataDetail dataDetail) {
+    public void setDropdownValue(Parameter section, Parameter parameter, ManualDataDetail dataDetail) {
 
 
         holder.droptext.setVisibility(View.VISIBLE);
@@ -181,20 +177,20 @@ public class ParameterMasterAdapter extends RecyclerView.Adapter<ParameterMaster
         holder.droptext.setAdapter(adapterType);
 
         if (dataDetail != null) {
-            if (section.getParameterId() == dataDetail.getParameterId() && section.getSectionId() == dataDetail.getSectionId()) {
+            if (section.getParameterId() == dataDetail.getParameterId() && sectionId == dataDetail.getSectionId()) {
 
                 holder.droptext.setSelection(dictionaryValue.indexOf(dataDetail.getValue()) + 1);
                 holder.droptext.setText(dataDetail.getValue());
 
-                dropdownHashMap.put(parentTempId + "," + section.getParameterId() + "," + section.getSectionId(), dataDetail.getValue());
+                dropdownHashMap.put(templateId + "," + section.getParameterId() + "," + sectionId, dataDetail.getValue());
 
                 holder.droptext.setOnItemClickListener((adapterView, view, i, l) -> {
                     String parameterValue = (String) adapterView.getItemAtPosition(i);
                     if (parameterValue == null) {
-                        dropdownHashMap.put(parentTempId + "," + section.getParameterId() + "," + section.getSectionId(), dataDetail.getValue());
+                        dropdownHashMap.put(templateId + "," + section.getParameterId() + "," + sectionId, dataDetail.getValue());
 
                     } else {
-                        dropdownHashMap.put(parentTempId + "," + section.getParameterId() + "," + section.getSectionId(), parameterValue);
+                        dropdownHashMap.put(templateId + "," + section.getParameterId() + "," + sectionId, parameterValue);
                     }
 
                 });
@@ -202,26 +198,26 @@ public class ParameterMasterAdapter extends RecyclerView.Adapter<ParameterMaster
             else {
                 holder.droptext.setOnItemClickListener((adapterView, view, i, l) -> {
                     String parameterValue = (String) adapterView.getItemAtPosition(i);
-                    dropdownHashMap.put(parentTempId + "," + section.getParameterId() + "," + section.getSectionId(), parameterValue);
+                    dropdownHashMap.put(templateId + "," + section.getParameterId() + "," + sectionId, parameterValue);
                 });
             }
         } else {
             holder.droptext.setOnItemClickListener((adapterView, view, i, l) -> {
                 String parameterValue = (String) adapterView.getItemAtPosition(i);
-                dropdownHashMap.put(parentTempId + "," + section.getParameterId() + "," + section.getSectionId(), parameterValue);
+                dropdownHashMap.put(templateId + "," + section.getParameterId() + "," + sectionId, parameterValue);
             });
         }
 
     }
 
-    public void setTextValue(SectionParameters section, ManualDataDetail dataDetail) {
+    public void setTextValue(Parameter section, ManualDataDetail dataDetail) {
         holder.editText.setVisibility(View.VISIBLE);
         if (dataDetail != null) {
-            if (section.getParameterId() == dataDetail.getParameterId() && section.getSectionId() == dataDetail.getSectionId()) {
+            if (section.getParameterId() == dataDetail.getParameterId() && sectionId == dataDetail.getSectionId()) {
                 holder.editText.setText(dataDetail.getValue());
             }
         }
-        editTextHashMap.put(parentTempId + "," + section.getParameterId() + "," + section.getSectionId(), holder.editText);
+        editTextHashMap.put(templateId + "," + section.getParameterId() + "," + sectionId, holder.editText);
 
     }
 

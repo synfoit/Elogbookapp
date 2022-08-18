@@ -31,7 +31,8 @@ public class LoginScreen extends AppCompatActivity {
     JSONParser jsonParser;
     private static String uniqueID = null;
     UserData userData;
-    MasterRepository masterRepository;
+    MasterRepository
+    masterRepository = new MasterRepository();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,19 +46,20 @@ public class LoginScreen extends AppCompatActivity {
         userData = new UserData(LoginScreen.this);
         connectionDetector = new ConnectionDetector(LoginScreen.this);
         jsonParser = new JSONParser();
-        masterRepository=new MasterRepository();
-       /* userRepository = new UserRepository();
-        userRepository.setUserData(LoginScreen.this);*/
-        masterRepository.setMasterData(LoginScreen.this,ApiUrl.user,"User");
+
+
+        masterRepository.setMasterData(LoginScreen.this, ApiUrl.user, "User");
 
 
         if (uniqueID == null) {
-            uniqueID = Comman.getSavedUserData(LoginScreen.this, Comman.Key_UNIQUE_ID);
+            uniqueID = Comman.getUUID(LoginScreen.this, Comman.Key_UNIQUE_ID);
 
-            if (uniqueID.length()==0) {
+            if (uniqueID.length() == 0) {
                 uniqueID = UUID.randomUUID().toString();
+                Comman.saveUUID(LoginScreen.this, Comman.Key_UNIQUE_ID, uniqueID);
             }
         }
+
         bt_login.setOnClickListener(view -> {
 
 
@@ -118,9 +120,7 @@ public class LoginScreen extends AppCompatActivity {
                     String token = jsonObject.getString("token");
                     message = jsonObject.getString("message");
                     System.out.println("usertoken get from server" + token + message);
-
-
-                    Comman.saveUserData(LoginScreen.this, Comman.Key_Usertoken, token, Comman.Key_UNIQUE_ID, uniqueID);
+                    Comman.saveUserData(LoginScreen.this, Comman.Key_Usertoken, token);
                     userData.adduserToken(token);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -129,7 +129,7 @@ public class LoginScreen extends AppCompatActivity {
                 getAllMasterData();
 
 
-                if (Comman.getSavedUserData(LoginScreen.this, Comman.Key_Usertoken).length()!=0 && message.equalsIgnoreCase("Success") ) {
+                if (Comman.getSavedUserData(LoginScreen.this, Comman.Key_Usertoken).length() != 0 && message.equalsIgnoreCase("Success")) {
                     Intent i = new Intent(LoginScreen.this, HomeScreen.class);
                     startActivity(i);
                     finish();
@@ -143,42 +143,15 @@ public class LoginScreen extends AppCompatActivity {
     }
 
     public void getAllMasterData() {
-        masterRepository.setMasterData(LoginScreen.this,ApiUrl.area,"Area");
-        masterRepository.setMasterData(LoginScreen.this,ApiUrl.dictionary,"Dictionary");
-        masterRepository.setMasterData(LoginScreen.this,ApiUrl.location,"Location");
-        masterRepository.setMasterData(LoginScreen.this,ApiUrl.parameter,"Parameter");
-        masterRepository.setMasterData(LoginScreen.this,ApiUrl.section,"Section");
-        masterRepository.setMasterData(LoginScreen.this,ApiUrl.plants,"Plants");
-        masterRepository.setMasterData(LoginScreen.this,ApiUrl.template,"Template");
-        masterRepository.setMasterData(LoginScreen.this,ApiUrl.unit,"Unit");
-        masterRepository.setMasterData(LoginScreen.this,ApiUrl.zone,"Zone");
-
-        /*AreaRepository areaRepository = new AreaRepository();
-        areaRepository.setAreaData(LoginScreen.this);
-
-        DictionaryRepository dictionaryRepository = new DictionaryRepository();
-        dictionaryRepository.setDictionaryData(LoginScreen.this);
-
-        LocationRepository locationRepository = new LocationRepository();
-        locationRepository.setLocationData(LoginScreen.this);
-
-        ParameterRepository parameterRepository = new ParameterRepository();
-        parameterRepository.setParameterData(LoginScreen.this);
-
-        PlantRepository plantRepository = new PlantRepository();
-        plantRepository.setPlantData(LoginScreen.this);
-
-        SectionRepository sectionRepository = new SectionRepository();
-        sectionRepository.setSectionData(LoginScreen.this);
-
-        TemplateRepository templateRepository = new TemplateRepository();
-        templateRepository.setTemplateData(LoginScreen.this);
-
-        UnitRepository unitRepository = new UnitRepository();
-        unitRepository.setUnitData(LoginScreen.this);
-
-        ZoneRepository zoneRepository = new ZoneRepository();
-        zoneRepository.setZoneData(LoginScreen.this);*/
+        masterRepository.setMasterData(LoginScreen.this, ApiUrl.area, "Area");
+        masterRepository.setMasterData(LoginScreen.this, ApiUrl.dictionary, "Dictionary");
+        masterRepository.setMasterData(LoginScreen.this, ApiUrl.location, "Location");
+        masterRepository.setMasterData(LoginScreen.this, ApiUrl.parameter, "Parameter");
+        masterRepository.setMasterData(LoginScreen.this, ApiUrl.section, "Section");
+        masterRepository.setMasterData(LoginScreen.this, ApiUrl.plants, "Plants");
+        masterRepository.setMasterData(LoginScreen.this, ApiUrl.template, "Template");
+        masterRepository.setMasterData(LoginScreen.this, ApiUrl.unit, "Unit");
+        masterRepository.setMasterData(LoginScreen.this, ApiUrl.zone, "Zone");
     }
 
     @Override

@@ -42,6 +42,29 @@ public class Parameter {
 
     }
 
+    public Parameter(int parameterId, String parameterName) {
+        this.parameterId=parameterId;
+        this.parameterName=parameterName;
+    }
+
+    public Parameter(int parameterId, String parameterName, int upperLimit, int lowerLimit, int toRange) {
+        this.parameterId=parameterId;
+        this.parameterName=parameterName;
+        this.upperLimit=upperLimit;
+        this.lowerLimit=lowerLimit;
+        this.toRange=toRange;
+
+    }
+
+    public Parameter(int parameterId, String parameterName, int upperLimit, int lowerLimit, int toRange, String parameterFieldType) {
+        this.parameterId=parameterId;
+        this.parameterName=parameterName;
+        this.upperLimit=upperLimit;
+        this.lowerLimit=lowerLimit;
+        this.toRange=toRange;
+        this.parameterFieldType=parameterFieldType;
+    }
+
     public int getParameterId() {
         return parameterId;
     }

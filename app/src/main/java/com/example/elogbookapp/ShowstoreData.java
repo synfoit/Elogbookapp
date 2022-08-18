@@ -37,11 +37,11 @@ public class ShowstoreData extends AppCompatActivity {
         toolbar.setTitle(R.string.app_name);
         Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
 
-        uniqueID = Comman.getSavedUserData(ShowstoreData.this,Comman.Key_UNIQUE_ID);
+        uniqueID = Comman.getUUID(ShowstoreData.this,Comman.Key_UNIQUE_ID);
 
         comman = new Comman(ShowstoreData.this);
         comman.sideBar(toolbar, ShowstoreData.this, ShowstoreData.this);
-        parameterValueRepository = new ParameterValueRepository();
+        parameterValueRepository = new ParameterValueRepository(ShowstoreData.this,Comman.Key_Usertoken);
         recyclerViewListView=findViewById(R.id.recyclerView);
 
 

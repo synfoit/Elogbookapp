@@ -1,22 +1,45 @@
 package com.example.elogbookapp.model;
 
 
+import java.util.ArrayList;
 
 public class Section {
     int sectionId;
     String sectionName;
+    ArrayList<Parameter> parameters;
     boolean isActive;
     int createBy;
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public int getCreateBy() {
+        return createBy;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public int getUpdateBy() {
+        return updateBy;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
     String createDate;
     int updateBy;
-         String updateDate;
+    String updateDate;
     public Section(int sectionId,
                    String sectionName,
                    boolean isActive,
                    int createBy,
                    String createDate,
                    int updateBy,
-                           String updateDate){
+                   String updateDate){
         this. sectionId=sectionId;
         this. sectionName=sectionName;
         this. isActive=isActive;
@@ -25,6 +48,20 @@ public class Section {
         this.updateBy=updateBy;
         this.updateDate=updateDate;
     }
+
+
+    public Section(int sectionId,
+                   String sectionName,
+                   ArrayList<Parameter> parameters
+                   ){
+        this. sectionId=sectionId;
+        this. sectionName=sectionName;
+        this.parameters=parameters;
+
+    }
+
+
+
     public int getSectionId() {
         return sectionId;
     }
@@ -41,27 +78,11 @@ public class Section {
         this.sectionName = sectionName;
     }
 
-    public boolean isActive() {
-        return isActive;
+    public ArrayList<Parameter> getParameters() {
+        return parameters;
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    public int getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(int createBy) {
-        this.createBy = createBy;
-    }
-
-    public String getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(String createDate) {
-        this.createDate = createDate;
+    public void setParameters(ArrayList<Parameter> parameters) {
+        this.parameters = parameters;
     }
 }

@@ -3,6 +3,7 @@ package com.example.elogbookapp.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.elogbookapp.Comman;
 import com.example.elogbookapp.R;
 import com.example.elogbookapp.model.ManualDataDetail;
+import com.example.elogbookapp.model.Section;
 import com.example.elogbookapp.model.Template;
 import com.example.elogbookapp.repository.ParameterValueRepository;
 
@@ -26,25 +29,29 @@ import java.util.List;
 import java.util.Map;
 
 public class TemplateMasterAdapater extends RecyclerView.Adapter<TemplateMasterAdapater.MyViewHolder> {
-    List<Template> templateList;
+    List<Section> sectionList;
     List<Map<String, EditText>> listdata = new ArrayList<>();
     List<Map<String, String>> dropdata = new ArrayList<>();
 
 
     String uniqId;
-    ParameterValueRepository parameterValueRepository = new ParameterValueRepository();
+    ParameterValueRepository parameterValueRepository ;
     Context context;
     String date;
-    String st;
-
+    int  templateId;
+    String userToken;
     public static int flag=0;
 
-    public TemplateMasterAdapater(List<Template> templateList, Context context, String uniqId, String date, String st) {
-        this.templateList = templateList;
+    public TemplateMasterAdapater(List<Section> sectionList, Context context, String uniqId, String date,  int  templateId, String userToken) {
+        this.sectionList = sectionList;
         this.context = context;
         this.uniqId = uniqId;
         this.date = date;
-        this.st = st;
+        this.userToken=userToken;
+        this.templateId = templateId;
+        parameterValueRepository = new ParameterValueRepository(context, Comman.getSavedUserData(context,Comman.Key_Usertoken));
+        listdata.clear();
+        dropdata.clear();
 
     }
 
@@ -58,13 +65,13 @@ public class TemplateMasterAdapater extends RecyclerView.Adapter<TemplateMasterA
     @SuppressLint({"ResourceAsColor", "NotifyDataSetChanged"})
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Template template = templateList.get(position);
-        holder.textView_parentName.setText(template.getTemplateName());
+        Section template = sectionList.get(position);
+        holder.textView_parentName.setText(template.getSectionName());
         holder.indextext.setText(String.valueOf(position + 1));
-        holder.subtitle.setText("Section Data: " + template.getSectionParametersList().size());
+        holder.subtitle.setText("Section Data: " + template.getParameters().size());
 
 
-        if (st.equalsIgnoreCase("temp3")) {
+     /*   if (st.equalsIgnoreCase("temp3")) {
             if (position == 2) {
                 holder.linearLayout_childItems.setVisibility(View.VISIBLE);
                 holder.im_uparrow.setVisibility(View.VISIBLE);
@@ -86,9 +93,9 @@ public class TemplateMasterAdapater extends RecyclerView.Adapter<TemplateMasterA
                 holder.im_uparrow.setVisibility(View.VISIBLE);
                 holder.im_downarrow.setVisibility(View.GONE);
             }
-        }
+        }*/
 
-        ParameterMasterAdapter parameterMasterAdapter = new ParameterMasterAdapter(template.getSectionParametersList(), template.getTemplateId(), context, date, uniqId);
+        ParameterMasterAdapter parameterMasterAdapter = new ParameterMasterAdapter(template.getParameters(),templateId, template.getSectionId(),context, date, uniqId,userToken);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(holder.context, LinearLayoutManager.VERTICAL, false);
 
         holder.recyclerView.setLayoutManager(manager);
@@ -96,13 +103,13 @@ public class TemplateMasterAdapater extends RecyclerView.Adapter<TemplateMasterA
         parameterMasterAdapter.notifyDataSetChanged();
 
         //Get which store in local templateId vise and date using uniqId
-        List<ManualDataDetail> details = parameterValueRepository.getPVDataTemplateId(context, date, template.getTemplateId(), uniqId);
+        List<ManualDataDetail> details = parameterValueRepository.getPVDataTemplateId(context, date, templateId, uniqId,userToken);
 
-        System.out.println("details size"+details.size());
-        if (template.getSectionParametersList().size() == details.size()) {
+
+        if (template.getParameters().size() <= details.size()) {
             holder.im_circle.setBackgroundResource(R.drawable.bg_circleblue);
             holder.indextext.setTextColor(Color.parseColor("#FFFFFF"));
-        } else if (template.getSectionParametersList().size() > details.size() && details.size() != 0) {
+        } else if (template.getParameters().size() > details.size() && details.size() != 0) {
             holder.im_circle.setBackgroundResource(R.drawable.bg_circlered);
             holder.indextext.setTextColor(Color.parseColor("#FFFFFF"));
         }else {
@@ -116,14 +123,13 @@ public class TemplateMasterAdapater extends RecyclerView.Adapter<TemplateMasterA
 
         //get Data from Parameter Adapter
         Map<String, EditText> adapterList = parameterMasterAdapter.getList();
+
         Map<String, String> dropValue = parameterMasterAdapter.getSelectionList();
 
 
-
-       // if(flag ==0) {
             listdata.add(adapterList);
             dropdata.add(dropValue);
-        //}
+
 
     }
 
@@ -134,6 +140,7 @@ public class TemplateMasterAdapater extends RecyclerView.Adapter<TemplateMasterA
     }
 
     public List<Map<String, String>> getdropData() {
+            //Get Value from Dropdown
 
 
         return dropdata;
@@ -142,7 +149,7 @@ public class TemplateMasterAdapater extends RecyclerView.Adapter<TemplateMasterA
 
     @Override
     public int getItemCount() {
-        return templateList.size();
+        return sectionList.size();
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -166,7 +173,7 @@ public class TemplateMasterAdapater extends RecyclerView.Adapter<TemplateMasterA
             subtitle = itemView.findViewById(R.id.tv_subtitle);
             indextext = itemView.findViewById(R.id.im_index);
             im_circle = itemView.findViewById(R.id.im_circle);
-
+            textView_parentName.setMovementMethod(new ScrollingMovementMethod());
 
 
             textView_parentName.setOnClickListener(this);

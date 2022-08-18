@@ -7,8 +7,8 @@
 
     <item
         android:id="@+id/edit"
-        android:icon="@drawable/ic_baseline_mode_edit_24"
-        android:title="Edit" />
+        android:icon="@drawable/ic_baseline_logout_24"
+        android:title="Logout" />
 
     <item
         android:id="@+id/placeholder"

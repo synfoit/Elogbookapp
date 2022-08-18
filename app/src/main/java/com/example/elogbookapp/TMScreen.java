@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,11 +16,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.elogbookapp.adapter.DrawerAdpter;
 import com.example.elogbookapp.adapter.TemplateMasterAdapater;
 import com.example.elogbookapp.model.ManualDataDetail;
+import com.example.elogbookapp.model.Section;
 import com.example.elogbookapp.model.Template;
 import com.example.elogbookapp.repository.ParameterValueRepository;
 import com.example.elogbookapp.util.TemplateUtil;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,6 +39,8 @@ public class TMScreen extends AppCompatActivity {
     Comman comman;
 
     public TextInputLayout selection, datesection;
+            TextView template;
+
     TextInputEditText tv_datesection;
 
     Button cancel_button, submit;
@@ -60,9 +68,15 @@ public class TMScreen extends AppCompatActivity {
         comman = new Comman(TMScreen.this);
         comman.sideBar(toolbar, TMScreen.this, TMScreen.this);
 
-        parameterValueRepository = new ParameterValueRepository();
+        parameterValueRepository = new ParameterValueRepository(TMScreen.this,Comman.Key_Usertoken);
+        int templateId=getIntent().getIntExtra("templateId",0);
+        String templateName=getIntent().getStringExtra("templateName");
+        String selectTem = getIntent().getStringExtra("sectionList");
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Section>>(){}.getType();
+        ArrayList<Section> sectionlist = gson.fromJson(selectTem, type);
 
-        String selectTem = getIntent().getStringExtra("temp");
+
 
         DrawerAdpter.selectedItem = 1;
 
@@ -72,17 +86,17 @@ public class TMScreen extends AppCompatActivity {
         datesection = findViewById(R.id.qqet_date);
         tv_datesection = findViewById(R.id.et_date);
         cancel_button = findViewById(R.id.bt_cancel);
-
+        template=findViewById(R.id.tv_tempName);
         selectedDate = Comman.dateFormat.format(new Date());
 
         tv_datesection.setText(selectedDate);
 
-        uniqueID = Comman.getSavedUserData(TMScreen.this, Comman.Key_UNIQUE_ID);
+        uniqueID = Comman.getUUID(TMScreen.this, Comman.Key_UNIQUE_ID);
 
         templateUtil = new TemplateUtil();
         templateList = templateUtil.getTemplateData(TMScreen.this);
 
-        ListAdapter = new TemplateMasterAdapater(templateList, TMScreen.this, uniqueID, Comman.dateFormat.format(myCalendar.getTime()), selectTem);
+        ListAdapter = new TemplateMasterAdapater(sectionlist, TMScreen.this, uniqueID, Comman.dateFormat.format(myCalendar.getTime()), templateId,Comman.getSavedUserData(TMScreen.this,Comman.Key_Usertoken));
 
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerViewListView.setLayoutManager(manager);
@@ -94,7 +108,7 @@ public class TMScreen extends AppCompatActivity {
             myCalendar.set(Calendar.DAY_OF_MONTH, day);
             updateLabel();
 
-            ListAdapter = new TemplateMasterAdapater(templateList, TMScreen.this, uniqueID, Comman.dateFormat.format(myCalendar.getTime()), selectTem);
+            ListAdapter = new TemplateMasterAdapater(sectionlist, TMScreen.this, uniqueID, Comman.dateFormat.format(myCalendar.getTime()), templateId,Comman.getSavedUserData(TMScreen.this,Comman.Key_Usertoken));
             recyclerViewListView.setLayoutManager(manager);
             recyclerViewListView.setAdapter(ListAdapter);
         };
@@ -108,7 +122,7 @@ public class TMScreen extends AppCompatActivity {
         });
 
         submit.setOnClickListener(view -> saveDataOnLocal());
-
+        template.setText(templateName);
 
     }
 
@@ -117,8 +131,9 @@ public class TMScreen extends AppCompatActivity {
         List<ManualDataDetail> parametervaluelist = new ArrayList<>();
 
         //Get Value from edittext int and text
-        for (int k = 0; k < ListAdapter.getListData().size(); k++) {
-            Map<String, EditText> stringEditTextMap = ListAdapter.getListData().get(k);
+        List<Map<String, EditText>> parameterTextList=  ListAdapter.getListData();
+        for (int k = 0; k < parameterTextList.size(); k++) {
+            Map<String, EditText> stringEditTextMap = parameterTextList.get(k);
             for (Map.Entry<String, EditText> entry : stringEditTextMap.entrySet()) {
 
                 String[] idvalue = entry.getKey().split(",");
@@ -129,8 +144,9 @@ public class TMScreen extends AppCompatActivity {
             }
         }
         //Get Value from Dropdown
-        for (int k = 0; k < ListAdapter.getdropData().size(); k++) {
-            Map<String, String> stringMap = ListAdapter.getdropData().get(k);
+        List<Map<String, String>> listdropdown= ListAdapter.getdropData();
+        for (int k = 0; k < listdropdown.size(); k++) {
+            Map<String, String> stringMap = listdropdown.get(k);
             for (Map.Entry<String, String> entry : stringMap.entrySet()) {
 
                  //Get value of templateId,sectionId,parameterId using key
@@ -157,7 +173,7 @@ public class TMScreen extends AppCompatActivity {
 
             //Save Data Local json format template vise
             if (manualDataDetails.size() != 0 && manualDataDetails.size() != 1) {
-                parameterValueRepository.setParameterValue(manualDataDetails, TMScreen.this, Comman.dateFormat.format(myCalendar.getTime()), template.getTemplateId(), uniqueID);
+                parameterValueRepository.setParameterValue(manualDataDetails, TMScreen.this, Comman.dateFormat.format(myCalendar.getTime()), template.getTemplateId(), uniqueID,Comman.getSavedUserData(TMScreen.this,Comman.Key_Usertoken));
             }
         }
 

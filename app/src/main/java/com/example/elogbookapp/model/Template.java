@@ -21,7 +21,7 @@ public class Template {
     String updateDate;
     boolean isActive;
 
-    ArrayList<SectionParameters> sectionParametersList;
+    ArrayList<Section> sectionParametersList;
     public int getTemplateId() {
         return templateId;
     }
@@ -142,18 +142,18 @@ public class Template {
         isActive = active;
     }
 
-    public ArrayList<SectionParameters> getSectionParametersList() {
+    public ArrayList<Section> getSectionParametersList() {
         return  sectionParametersList;
     }
 
-    public void setSectionParametersList(ArrayList<SectionParameters> sectionParametersList) {
+    public void setSectionParametersList(ArrayList<Section> sectionParametersList) {
         this.sectionParametersList = sectionParametersList;
     }
 
 
 
 
-    public Template(int templateId, String templateName,String parameterName,String parameterDetail, String plantName, String zoneName, String locationName, int parameterId, int plantId, int zoneId, int locationId, int dictionaryId, int createBy, String createDate, int updateBy, String updateDate, boolean isactive, ArrayList<SectionParameters> sectionParametersList) {
+    public Template(int templateId, String templateName,String parameterName,String parameterDetail, String plantName, String zoneName, String locationName, int parameterId, int plantId, int zoneId, int locationId, int dictionaryId, int createBy, String createDate, int updateBy, String updateDate, boolean isactive, ArrayList<Section> sectionParametersList) {
         this. templateId=templateId;
         this. templateName=templateName;
         this. parameterName=parameterName;
