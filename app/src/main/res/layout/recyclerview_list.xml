@@ -66,11 +66,10 @@
                             android:id="@+id/cpdTypeLayout"
                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="63dp"
                             android:layout_alignBaseline="@id/qqet_date"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="10dp"
-
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -82,6 +81,9 @@
                                 android:layout_height="match_parent"
                                 android:inputType="none"
                                 android:text="@string/choose_shift"
+
+                                android:focusable="false"
+                                android:clickable="false"
                                 android:textColor="@color/purple_500"
                                 tools:ignore="LabelFor" />
 
@@ -94,6 +96,8 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="10dp"
                             android:inputType="none"
+                            android:focusable="false"
+                            android:clickable="false"
                             android:background="@drawable/customedit"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"

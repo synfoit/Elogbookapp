@@ -193,12 +193,19 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/light" />
 
+            <ProgressBar
+                android:id="@+id/pb_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:overScrollMode="never" />
+
 
         </LinearLayout>
     </LinearLayout>

@@ -24,7 +24,7 @@ public class TrippleDes {
 
         byte [] results = new byte[0];
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            results = cipher.doFinal(Base64.getDecoder().decode(text));
+            results = cipher.doFinal(Base64.getMimeDecoder().decode(text));
         }
         return new String(results,"UTF-8");
     }

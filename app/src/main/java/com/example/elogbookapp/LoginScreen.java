@@ -17,8 +17,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.Objects;
-import java.util.UUID;
+
 
 public class LoginScreen extends AppCompatActivity {
     Button bt_login;
@@ -29,10 +30,10 @@ public class LoginScreen extends AppCompatActivity {
     ConnectionDetector connectionDetector;
 
     JSONParser jsonParser;
-    private static String uniqueID = null;
+
     UserData userData;
-    MasterRepository
-    masterRepository = new MasterRepository();
+    MasterRepository  masterRepository = new MasterRepository();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,14 +52,7 @@ public class LoginScreen extends AppCompatActivity {
         masterRepository.setMasterData(LoginScreen.this, ApiUrl.user, "User");
 
 
-        if (uniqueID == null) {
-            uniqueID = Comman.getUUID(LoginScreen.this, Comman.Key_UNIQUE_ID);
 
-            if (uniqueID.length() == 0) {
-                uniqueID = UUID.randomUUID().toString();
-                Comman.saveUUID(LoginScreen.this, Comman.Key_UNIQUE_ID, uniqueID);
-            }
-        }
 
         bt_login.setOnClickListener(view -> {
 
@@ -69,9 +63,9 @@ public class LoginScreen extends AppCompatActivity {
                     password = Objects.requireNonNull(et_password.getText()).toString();
 
                     if (username.isEmpty()) {
-                        comman.getToast("Please Enter UserName", LoginScreen.this);
+                        Comman.getToast("Please Enter UserName", LoginScreen.this);
                     } else if (password.isEmpty()) {
-                        comman.getToast("Please Enter Password", LoginScreen.this);
+                        Comman.getToast("Please Enter Password", LoginScreen.this);
                     } else {
                         JSONObject object = new JSONObject();
                         object.put("message", "Login");
@@ -86,7 +80,7 @@ public class LoginScreen extends AppCompatActivity {
                     e.printStackTrace();
                 }
             } else {
-                comman.getToast("Please connect internet", LoginScreen.this);
+                Comman.getToast("Please connect internet", LoginScreen.this);
             }
 
         });
@@ -109,17 +103,17 @@ public class LoginScreen extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String responce) {
+        protected void onPostExecute(String response) {
             if (pd != null)
                 pd.dismiss();
-            if (!responce.equals("")) {
+            if (!response.equals("")) {
                 String message = "";
                 JSONObject jsonObject;
                 try {
-                    jsonObject = new JSONObject(responce);
+                    jsonObject = new JSONObject(response);
                     String token = jsonObject.getString("token");
                     message = jsonObject.getString("message");
-                    System.out.println("usertoken get from server" + token + message);
+
                     Comman.saveUserData(LoginScreen.this, Comman.Key_Usertoken, token);
                     userData.adduserToken(token);
                 } catch (JSONException e) {
@@ -130,12 +124,23 @@ public class LoginScreen extends AppCompatActivity {
 
 
                 if (Comman.getSavedUserData(LoginScreen.this, Comman.Key_Usertoken).length() != 0 && message.equalsIgnoreCase("Success")) {
-                    Intent i = new Intent(LoginScreen.this, HomeScreen.class);
-                    startActivity(i);
-                    finish();
+                    Thread gfgThread = new Thread(() -> {
+
+                        if (Comman.getLicenseModule(LoginScreen.this)) {
+                            Intent i = new Intent(LoginScreen.this, HomeScreen.class);
+                            startActivity(i);
+                            finish();
+                        } else {
+                            Intent i = new Intent(LoginScreen.this, LicenseScreen.class);
+                            startActivity(i);
+                            finish();
+                        }
+                    });
+
+                    gfgThread.start();
                 }
             } else {
-                comman.getToast("Please Correct Username and Password ", LoginScreen.this);
+                Comman.getToast("Please Correct Username and Password ", LoginScreen.this);
 
             }
 
@@ -143,16 +148,15 @@ public class LoginScreen extends AppCompatActivity {
     }
 
     public void getAllMasterData() {
-        masterRepository.setMasterData(LoginScreen.this, ApiUrl.area, "Area");
+
         masterRepository.setMasterData(LoginScreen.this, ApiUrl.dictionary, "Dictionary");
-        masterRepository.setMasterData(LoginScreen.this, ApiUrl.location, "Location");
         masterRepository.setMasterData(LoginScreen.this, ApiUrl.parameter, "Parameter");
         masterRepository.setMasterData(LoginScreen.this, ApiUrl.section, "Section");
-        masterRepository.setMasterData(LoginScreen.this, ApiUrl.plants, "Plants");
         masterRepository.setMasterData(LoginScreen.this, ApiUrl.template, "Template");
-        masterRepository.setMasterData(LoginScreen.this, ApiUrl.unit, "Unit");
-        masterRepository.setMasterData(LoginScreen.this, ApiUrl.zone, "Zone");
+
     }
+
+
 
     @Override
     public void onBackPressed() {

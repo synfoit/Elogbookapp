@@ -1,7 +1,7 @@
 package com.example.elogbookapp.util;
 
 import android.content.Context;
-import android.util.Log;
+
 import com.example.elogbookapp.model.Dictionary;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,7 +15,7 @@ import java.util.List;
 public class DictinaryUtil {
     public  List<Dictionary> getDictionaryData(Context context) {
         List<Dictionary> dictionaryList=new ArrayList<>();
-        List<String> stringList=new ArrayList<>();
+
         File file = new File(context.getFilesDir(),"Dictionary");
         FileReader fileReader = null;
         try {

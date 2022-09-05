@@ -22,6 +22,23 @@ public class Template {
     boolean isActive;
 
     ArrayList<Section> sectionParametersList;
+
+    public Template(int templateId, String templateName, String parameterName, String parameterDetail, int parameterId, int dictionaryId, ArrayList<Section> sectionList) {
+    this.templateId=templateId;
+    this.templateName=templateName;
+    this.parameterName=parameterName;
+    this.parameterDetail=parameterDetail;
+    this.parameterId=parameterId;
+    this.dictionaryId=dictionaryId;
+    this.sectionParametersList=sectionList;
+    }
+
+    public Template(int templateId, String templateName, ArrayList<Section> sectionList) {
+        this.templateId=templateId;
+        this.templateName=templateName;
+        this.sectionParametersList=sectionList;
+    }
+
     public int getTemplateId() {
         return templateId;
     }

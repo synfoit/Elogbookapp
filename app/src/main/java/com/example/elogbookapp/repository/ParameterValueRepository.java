@@ -2,7 +2,7 @@ package com.example.elogbookapp.repository;
 
 import android.content.Context;
 import android.os.StrictMode;
-import android.util.Log;
+
 
 import com.example.elogbookapp.ApiUrl;
 import com.example.elogbookapp.ConnectionDetector;
@@ -42,14 +42,13 @@ public class ParameterValueRepository {
         Thread gfgThread = new Thread(() -> {
             try {
                 String str = new Gson().toJson(manualDataDetails);
-                System.out.println("Inertvalue" + str + userToken + androidId);
-                Log.d("token", userToken);
+
                 File file = new File(context.getFilesDir().toString() + "/Datavalue");
                 file.mkdirs();
                 File outputFile = new File(file, "ParameterValue," + androidId + "," + userToken + "," + templateId + "," + date + ".json");
-                FileReader fileReader;
+
                 if (outputFile.exists()) {
-                    System.out.println("exitsfile");
+
                     outputFile.delete();
 
                 }
@@ -130,7 +129,7 @@ public class ParameterValueRepository {
             }
             bufferedReader.close();
             String response = stringBuilder.toString();
-            System.out.println("resssss" + response);
+
             JSONObject jsonObj = new JSONObject(response);
             JSONArray jArr = jsonObj.getJSONArray(jsonObjectName);
             for (int j = 0; j < jArr.length(); j++) {
@@ -145,36 +144,33 @@ public class ParameterValueRepository {
         return parameterList;
     }
 
-    public void sendDataToServer(Context context, List<ManualDataDetail> manualDataDetails) {
-
-        Thread gfgThread = new Thread(() -> {
-            try {
-
-                String str = new Gson().toJson(manualDataDetails);
-
-                //Check Network Connection
-                ConnectionDetector connectionDetector = new ConnectionDetector(context);
-                if (connectionDetector.isConnectingToInternet()) {
-                    JSONArray jsonArray = new JSONArray(str);
-                    JSONObject object = new JSONObject();
-                    object.put(jsonObjectName, jsonArray);
-
-                    StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                    StrictMode.setThreadPolicy(gfgPolicy);
-
-                    System.out.println("datammmmmmmmmmmmmmmmmmmmmmm" + object + userToken);
-
-                    boolean response = jsonParser.getJSONFromUrl(ApiUrl.manualDataDetail, object, userToken);
+    public boolean sendDataToServer(Context context, List<ManualDataDetail> manualDataDetails) {
 
 
-                }
+        try {
+            String str = new Gson().toJson(manualDataDetails);
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            //Check Network Connection
+            ConnectionDetector connectionDetector = new ConnectionDetector(context);
+            if (connectionDetector.isConnectingToInternet()) {
+                JSONArray jsonArray = new JSONArray(str);
+                JSONObject object = new JSONObject();
+                object.put(jsonObjectName, jsonArray);
+
+                StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(gfgPolicy);
+
+                return jsonParser.getJSONFromUrl(ApiUrl.manualDataDetail, object, userToken);
+
+
             }
 
-        });
-        gfgThread.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return false;
     }
 
     public void deleteFile(Context context) {

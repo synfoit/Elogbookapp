@@ -36,7 +36,9 @@ public class ParameterUtil {
             JSONArray jArr = new JSONArray(responce);
             for (int i=0; i < jArr.length(); i++) {
                 JSONObject jsonObject  = new JSONObject(jArr.getString(i));
-                parameterList.add(new Parameter(jsonObject.getInt("parameterId"),jsonObject.getString("parameterName"),jsonObject.getString("parameterDisplayName"),jsonObject.getInt("upperLimit"),jsonObject.getInt("lowerLimit"),jsonObject.getInt("toRange"),jsonObject.getInt("unitID"),jsonObject.getString("parameterType"),jsonObject.getString("parameterFieldType"),jsonObject.getInt("createBy"), jsonObject.getString("createDate"), updateby,updateDate,jsonObject.getBoolean("isactive"),jsonObject.getInt("dictionaryId"),jsonObject.getString("unitName"),jsonObject.getString("dictionaryName")));
+                parameterList.add(new Parameter(jsonObject.getInt("parameterId"),jsonObject.getString("parameterName"),jsonObject.getString("parameterDisplayName"),jsonObject.getInt("upperLimit"),jsonObject.getInt("lowerLimit"),jsonObject.getInt("toRange"),jsonObject.getString("parameterType"),jsonObject.getString("parameterFieldType"),jsonObject.getInt("dictionaryId")));
+
+                //parameterList.add(new Parameter(jsonObject.getInt("parameterId"),jsonObject.getString("parameterName"),jsonObject.getString("parameterDisplayName"),jsonObject.getInt("upperLimit"),jsonObject.getInt("lowerLimit"),jsonObject.getInt("toRange"),jsonObject.getInt("unitID"),jsonObject.getString("parameterType"),jsonObject.getString("parameterFieldType"),jsonObject.getInt("createBy"), jsonObject.getString("createDate"), updateby,updateDate,jsonObject.getBoolean("isactive"),jsonObject.getInt("dictionaryId"),jsonObject.getString("unitName"),jsonObject.getString("dictionaryName")));
 
             }
         } catch (Exception e) {

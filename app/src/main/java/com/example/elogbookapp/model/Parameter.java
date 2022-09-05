@@ -65,6 +65,18 @@ public class Parameter {
         this.parameterFieldType=parameterFieldType;
     }
 
+    public Parameter(int parameterId, String parameterName, String parameterDisplayName, int upperLimit, int lowerLimit, int toRange, String parameterType, String parameterFieldType, int dictionaryId) {
+        this.parameterId=parameterId;
+        this.parameterDisplayName=parameterDisplayName;
+        this.parameterName=parameterName;
+        this.upperLimit=upperLimit;
+        this.lowerLimit=lowerLimit;
+        this.toRange=toRange;
+        this.parameterFieldType=parameterFieldType;
+        this.parameterType=parameterType;
+        this.dictionaryId=dictionaryId;
+    }
+
     public int getParameterId() {
         return parameterId;
     }

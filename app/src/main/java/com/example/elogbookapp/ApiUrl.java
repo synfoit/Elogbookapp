@@ -17,6 +17,7 @@ public class ApiUrl {
     public static String userLogin=commanapi+"User"+"/LoginFromAndroid";
     public static String zone = commanapi+ "Zone";
     public static String sync = commanapi+ "SyncData/GetAll";
+    public static String license = commanapi+ "Licenses/";
 
 
 

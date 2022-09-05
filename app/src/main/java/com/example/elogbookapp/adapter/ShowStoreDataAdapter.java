@@ -16,7 +16,7 @@ import com.example.elogbookapp.model.ManualDataDetail;
 import com.example.elogbookapp.model.Parameter;
 
 import com.example.elogbookapp.model.Section;
-import com.example.elogbookapp.model.SectionParameters;
+
 import com.example.elogbookapp.model.Template;
 import com.example.elogbookapp.util.ParameterUtil;
 import com.example.elogbookapp.util.TemplateUtil;

@@ -12,19 +12,27 @@
     android:orientation="horizontal"
     android:weightSum="8">
 
-    <TextView
-        android:id="@+id/tv_parameterName"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_weight="2.0"
+        android:padding="5dp"
+        android:layout_gravity="center"
+        android:layout_weight="2.0">
+    <TextView
+        android:id="@+id/tv_parameterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/nunitonans_regular"
         android:padding="5dp"
         android:textAlignment="center"
         android:textSize="12sp"
         android:textColor="@color/black"
+        android:maxLines="2"
+        android:minLines="1"
         android:scrollbars="horizontal"
         tools:ignore="RtlSymmetry" />
-
+    </ScrollView>
     <TextView
         android:id="@+id/tv_uppervalue"
         android:layout_width="0dp"

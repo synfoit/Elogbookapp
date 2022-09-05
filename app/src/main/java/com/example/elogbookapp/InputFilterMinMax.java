@@ -6,7 +6,7 @@ import android.text.Spanned;
 public class InputFilterMinMax implements InputFilter {
 
     private int min, max;
-
+    private String blockCharacterSet = "~#^|$%&*!";
     public InputFilterMinMax(int min, int max) {
         this.min = min;
         this.max = max;
@@ -19,12 +19,17 @@ public class InputFilterMinMax implements InputFilter {
 
     @Override
     public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-        try {
+       /* try {
             int input = Integer.parseInt(dest.toString() + source.toString());
             if (isInRange(min, max, input))
                 return null;
         } catch (NumberFormatException nfe) { }
-        return "";
+        return "";*/
+
+        if (source != null && blockCharacterSet.contains(("" + source))) {
+            return "";
+        }
+        return null;
     }
 
     private boolean isInRange(int a, int b, int c) {
