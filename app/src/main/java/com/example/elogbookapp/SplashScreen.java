@@ -69,7 +69,6 @@ public class SplashScreen extends AppCompatActivity {
                             } else {
                                 syncModule();
                                 deleteLocalData();
-
                                 startSpecificActivity(SplashScreen.this, HomeScreen.class);
 
                             }

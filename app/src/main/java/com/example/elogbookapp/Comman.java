@@ -214,7 +214,7 @@ public class Comman {
     }
 
     public static void saveUUID(Context context, String key, String value) {
-        Log.d("key//",key);
+        Log.d("key//", key);
         SharedPreferences pref = context.getSharedPreferences(SHARED_PREF_UUID, 0);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(key, value);
@@ -231,10 +231,11 @@ public class Comman {
         StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(gfgPolicy);
     }
+
     public static boolean getLicenseModule(Context context) {
 
         try {
-            JSONParser   jp=new JSONParser();
+            JSONParser jp = new JSONParser();
             String lancesValue = jp.getLincesData(ApiUrl.license, Comman.getUUID(context, Comman.Key_UNIQUE_ID));
             JSONObject object = new JSONObject(lancesValue);
             String encryptedValue = object.getString("licenseKey");
@@ -242,11 +243,15 @@ public class Comman {
             String decorated = TrippleDes.Decrypt(encryptedValue, Comman.Key_license);
             System.out.println(decorated);
             JSONObject encryptData = new JSONObject(decorated);
-            Date StarDate = Comman.dateFormat.parse(encryptData.getString("StartDate"));
-            Date EndDate = Comman.dateFormat.parse(encryptData.getString("EndDate"));
-            Date CurrentDate = new Date();
+            if (encryptData.getString("SubscriptionType").equalsIgnoreCase("Paid")) {
+                return true;
+            } else if (encryptData.getString("SubscriptionType").equalsIgnoreCase("Trial")) {
+                Date StarDate = Comman.dateFormat.parse(encryptData.getString("StartDate"));
+                Date EndDate = Comman.dateFormat.parse(encryptData.getString("EndDate"));
+                Date CurrentDate = new Date();
 
-            return !CurrentDate.before(StarDate) || !CurrentDate.after(EndDate);
+                return !CurrentDate.before(StarDate) || !CurrentDate.after(EndDate);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -284,8 +289,6 @@ public class Comman {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("HardwareIds")
     public static String androidUniqeId(Context context) throws SecurityException, NullPointerException {
-
-
         return Settings.Secure.getString(context.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
     }

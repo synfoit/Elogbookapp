@@ -18,6 +18,7 @@ public class ApiUrl {
     public static String zone = commanapi+ "Zone";
     public static String sync = commanapi+ "SyncData/GetAll";
     public static String license = commanapi+ "Licenses/";
+    public static String registerDevice=commanapi+"Licenses/register/";
 
 
 

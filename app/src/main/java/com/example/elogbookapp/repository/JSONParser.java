@@ -1,11 +1,15 @@
 
 package com.example.elogbookapp.repository;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -95,6 +99,40 @@ public class JSONParser {
     }
 
 
+    public JSONObject registerDevice(String url1, String data){
+        try {
+            URL url = new URL(url1+"?"+data);
+            Log.d("Elogbook","URL : "+url1);
+            Log.d("Elogbook","DATA : "+data);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            writer.write(data);
+            writer.flush();
+            writer.close();
+            os.close();
+            conn.connect();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            br.close();
+
+            jObj = new JSONObject(sb.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return jObj;
+    }
     public String getJsonParser(String Url) {
 
         CookieHandler.setDefault(new CookieManager(null, CookiePolicy.ACCEPT_ALL));

@@ -32,7 +32,8 @@
         tools:targetApi="m">
         <activity
             android:name=".AddDeviceId"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Elogbookapp.NoActionBar"/>
         <activity
             android:name=".LicenseScreen"
             android:exported="false" />

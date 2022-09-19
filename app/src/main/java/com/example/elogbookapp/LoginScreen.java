@@ -126,15 +126,15 @@ public class LoginScreen extends AppCompatActivity {
                 if (Comman.getSavedUserData(LoginScreen.this, Comman.Key_Usertoken).length() != 0 && message.equalsIgnoreCase("Success")) {
                     Thread gfgThread = new Thread(() -> {
 
-                        if (Comman.getLicenseModule(LoginScreen.this)) {
+                       // if (Comman.getLicenseModule(LoginScreen.this)) {
                             Intent i = new Intent(LoginScreen.this, HomeScreen.class);
                             startActivity(i);
                             finish();
-                        } else {
+                        /*} else {
                             Intent i = new Intent(LoginScreen.this, LicenseScreen.class);
                             startActivity(i);
                             finish();
-                        }
+                        }*/
                     });
 
                     gfgThread.start();

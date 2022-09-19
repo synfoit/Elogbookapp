@@ -4,47 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/mobile"
     tools:context=".AddDeviceId">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="20dp"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:gravity="bottom"
+        android:orientation="vertical"
+        tools:ignore="MissingClass"
+        android:layout_marginBottom="30dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="305dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/cpdTypeLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="RelativeOverlap">
+            android:text="Enter LicenseId"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tv_deviceId"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/enter_licenseid"
-                android:textColor="@color/purple_500"
-                tools:ignore="LabelFor" />
-
-
-        </com.google.android.material.textfield.TextInputLayout>
+        <com.vicmikhailau.maskededittext.MaskedEditText
+            android:id="@+id/et_masked"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:background="@drawable/customedit"
+            android:hint="###-###-###-###"
+            app:mask="###-###-###-###"
+            />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_rectangle"
             android:fontFamily="@font/nunitonans_regular"
-            android:padding="10dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/add"
             android:textColor="@color/white" />
 

@@ -3,12 +3,10 @@ package com.example.elogbookapp.adapter;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,40 +20,35 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.elogbookapp.ApiUrl;
 import com.example.elogbookapp.Comman;
-import com.example.elogbookapp.HomeScreen;
-import com.example.elogbookapp.LicenseScreen;
-import com.example.elogbookapp.LoginScreen;
 import com.example.elogbookapp.R;
 import com.example.elogbookapp.model.ManualDataDetail;
 import com.example.elogbookapp.model.Section;
-
 import com.example.elogbookapp.repository.ParameterValueRepository;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TemplateMasterAdapater extends RecyclerView.Adapter<TemplateMasterAdapater.MyViewHolder> {
     List<Section> sectionList;
     List<Map<String, EditText>> listdata = new ArrayList<>();
     List<Map<String, String>> dropdata = new ArrayList<>();
 
-
+    ProgressDialog progress;
     String uniqueId;
     ParameterValueRepository parameterValueRepository;
     Context context;
     String date;
     int templateId;
     String userToken;
-    public static int flag = 0;
+
     ProgressDialog pd;
 
     public TemplateMasterAdapater(List<Section> sectionList, Context context, String uniqueId, String date, int templateId, String userToken) {
@@ -91,51 +84,6 @@ public class TemplateMasterAdapater extends RecyclerView.Adapter<TemplateMasterA
         holder.recyclerView.setLayoutManager(manager);
         holder.recyclerView.setAdapter(parameterMasterAdapter);
 
-        holder.im_down_arrow.setOnClickListener(view -> {
-            //  expand(view);
-            holder.progressBar.setVisibility(View.VISIBLE);
-
-
-            holder.linearLayout_childItems.setVisibility(View.VISIBLE);
-            holder.im_up_arrow.setVisibility(View.VISIBLE);
-            holder.im_down_arrow.setVisibility(View.GONE);
-
-           // parameterMasterAdapter.notifyDataSetChanged();
-            holder.progressBar.setVisibility(View.GONE);
-
-
-        });
-        holder.im_up_arrow.setOnClickListener(view -> {
-            //collapse(view);
-            ProgressDialog dialog = new ProgressDialog(context);
-
-            dialog.setMessage("Please wait.....");
-            dialog.show();
-
-
-            holder.linearLayout_childItems.setVisibility(View.GONE);
-            holder.im_up_arrow.setVisibility(View.GONE);
-            holder.im_down_arrow.setVisibility(View.VISIBLE);
-            dialog.dismiss();
-        });
-       /* holder.itemView.setOnClickListener(view -> {
-
-            ProgressDialog dialog = new ProgressDialog(context);
-
-            dialog.setMessage("Please wait.....");
-            dialog.show();
-            if (holder.linearLayout_childItems.getVisibility() == View.VISIBLE) {
-                holder.linearLayout_childItems.setVisibility(View.GONE);
-                holder.im_up_arrow.setVisibility(View.GONE);
-                holder.im_down_arrow.setVisibility(View.VISIBLE);
-                dialog.dismiss();
-            } else {
-                holder.linearLayout_childItems.setVisibility(View.VISIBLE);
-                holder.im_up_arrow.setVisibility(View.VISIBLE);
-                holder.im_down_arrow.setVisibility(View.GONE);
-                dialog.dismiss();
-            }
-        });*/
 
         //Get which store in local templateId vise and date using uniqueId
         List<ManualDataDetail> details = parameterValueRepository.getPVDataTemplateId(context, date, templateId, uniqueId, userToken);
@@ -235,7 +183,7 @@ public class TemplateMasterAdapater extends RecyclerView.Adapter<TemplateMasterA
         return sectionList.size();
     }
 
-    static class MyViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ {
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ProgressDialog dialog;
         Context context;
         TextView textView_parentName, subtitle, indextext;
@@ -258,9 +206,9 @@ public class TemplateMasterAdapater extends RecyclerView.Adapter<TemplateMasterA
             subtitle = itemView.findViewById(R.id.tv_subtitle);
             indextext = itemView.findViewById(R.id.im_index);
             im_circle = itemView.findViewById(R.id.im_circle);
-            progressBar=itemView.findViewById(R.id.pb_view);
+            progressBar = itemView.findViewById(R.id.pb_view);
             textView_parentName.setMovementMethod(new ScrollingMovementMethod());
-            /*itemView.setOnClickListener(view -> {
+            itemView.setOnClickListener(view -> {
                 if (linearLayout_childItems.getVisibility() == View.VISIBLE) {
                     linerLayoutInvisible();
 
@@ -269,60 +217,82 @@ public class TemplateMasterAdapater extends RecyclerView.Adapter<TemplateMasterA
                     linerLayoutVisible();
 
                 }
-            });*/
-         /*   textView_parentName.setOnClickListener(this);
+            });
+            textView_parentName.setOnClickListener(this);
             im_down_arrow.setOnClickListener(this);
-            im_up_arrow.setOnClickListener(this);*/
+            im_up_arrow.setOnClickListener(this);
 
 
         }
 
-      /*  @SuppressLint("ResourceType")
+        @SuppressLint("ResourceType")
         @Override
         public void onClick(View view) {
-            dialog = new ProgressDialog(recyclerView.getContext());
-            dialog.setMessage("Please wait.....");
-            dialog.show();
-            if (view.getId() == R.id.im_downarrow) {
-                flag = 1;
-                if (linearLayout_childItems.getVisibility() == View.VISIBLE) {
-                    linerLayoutInvisible();
+            progress = new ProgressDialog(recyclerView.getContext());
+            progress.setMessage("Please wait.....");
+            progress.show();
+            new Thread() {
+                public void run() {
+                    // do the long operation on this thread
+                    // after retrieving the data then use it to build the views and close the dialog on the main UI thread
 
-                } else {
+                    try {
+                        ((AppCompatActivity) context).runOnUiThread(() -> {
+                            // remove the retrieving of data from this method and let it just build the views
+                            if (view.getId() == R.id.im_downarrow) {
 
-                    linerLayoutVisible();
+                                if (linearLayout_childItems.getVisibility() == View.VISIBLE) {
+                                    linerLayoutInvisible();
+                                    progress.dismiss();
+                                } else {
+                                    linerLayoutVisible();
+                                    progress.dismiss();
+                                }
+                            } else if (view.getId() == R.id.im_arrowup) {
 
+                                linerLayoutInvisible();
+                                progress.dismiss();
+                            } else {
+                                if (linearLayout_childItems.getVisibility() == View.VISIBLE) {
+                                    linerLayoutInvisible();
+                                    progress.dismiss();
+
+                                } else {
+
+                                    linerLayoutVisible();
+                                    progress.dismiss();
+                                }
+
+
+                            }
+
+                        });
+                    } catch (Exception e) {
+                        Log.e("tag", e.getMessage());
+                    }
                 }
-            } else if (view.getId() == R.id.im_arrowup) {
-                flag = 2;
-                linerLayoutInvisible();
-            } else {
-                if (linearLayout_childItems.getVisibility() == View.VISIBLE) {
-                    linerLayoutInvisible();
+            }.start();
 
-                } else {
 
-                    linerLayoutVisible();
-
-                }
-            }
-        }*/
+        }
 
 
         public void linerLayoutVisible() {
             linearLayout_childItems.setVisibility(View.VISIBLE);
             im_up_arrow.setVisibility(View.VISIBLE);
             im_down_arrow.setVisibility(View.GONE);
-            dialog.dismiss();
+
         }
 
         public void linerLayoutInvisible() {
             linearLayout_childItems.setVisibility(View.GONE);
             im_up_arrow.setVisibility(View.GONE);
             im_down_arrow.setVisibility(View.VISIBLE);
-            dialog.dismiss();
+
         }
     }
+
+
 
 
 }
